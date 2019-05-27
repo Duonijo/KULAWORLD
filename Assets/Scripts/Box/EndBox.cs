@@ -21,7 +21,7 @@ public class EndBox : Box {
 		
 	}
 
-	private void OnCollisionEnter(Collision other)
+	public override void OnCollisionEnter(Collision other)
 	{
 		print("end box");
         print(Keys.NumberKeys);

@@ -50,8 +50,6 @@ namespace Trap
             {    
                 PlayerMovement player = GameObject.Find("Sphere").GetComponent<PlayerMovement>();
                 player.playerLife.LevelDeath(player);
-                player.Respawn();
-                player.playerLife.Death = false;
 
             }
             catch (Exception e)

@@ -8,23 +8,19 @@ namespace GamePlay
 	{
 
 		private Vector3 _startPosition;
-		private bool _death;
-
-		public bool Death
-		{
-			get => _death;
-			set => _death = value;
-		}
+		private Score _score;
 
 		// Use this for initialization
 		void Start ()
 		{
 			_startPosition = transform.position;
-			_death = false;
+			_score = GameObject.Find("Canvas").GetComponent<Score>();
+
 		}
 	
 		// Update is called once per frame
 		void Update () {
+			
 			if (transform.position.y < _startPosition.z - 100)
 			{
 				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -35,20 +31,23 @@ namespace GamePlay
 		public void LevelDeath(PlayerMovement player)
 		{
 
-			Score score = GameObject.Find("Canvas").GetComponent<Score>();
 			print("LEVEL DEATH");
-			if (score.sharedScore-1000>=0)
+			if (_score.sharedScore-1000>=0)
 			{
-				var tamponScore = score.score.text;
-				score.sharedScore = int.Parse(tamponScore);
-				score.score.text = (score.sharedScore-1000).ToString();
-				score.sharedScore = int.Parse(score.score.text);
-				_death = true;
+				var tamponScore = _score.score.text;
+				_score.sharedScore = int.Parse(tamponScore);
+				_score.score.text = (_score.sharedScore-1000).ToString();
+				_score.sharedScore = int.Parse(_score.score.text);
+				PlayerPrefs.SetInt("Score", _score.sharedScore);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
 			}
 			else
 			{
 				print("LOSE");
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+				PlayerPrefs.SetInt("Score", 0);
+				SceneManager.LoadScene(1);
+				//reload from 0
 			}
 		
 		}

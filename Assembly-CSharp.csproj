@@ -60,12 +60,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bonus\Hourglass.cs" />
+    <Compile Include="Assets\Scripts\Bonus\Transporters.cs" />
     <Compile Include="Assets\Scripts\Box\Box.cs" />
     <Compile Include="Assets\Scripts\Box\EndBox.cs" />
     <Compile Include="Assets\Scripts\Box\InvisibleBox.cs" />
     <Compile Include="Assets\Scripts\Box\StartingBox.cs" />
     <Compile Include="Assets\Scripts\GamePlay\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\GamePlay\Command.cs" />
+    <Compile Include="Assets\Scripts\GamePlay\EditorMove.cs" />
     <Compile Include="Assets\Scripts\GamePlay\FloatingObj.cs" />
     <Compile Include="Assets\Scripts\GamePlay\Fruit.cs" />
     <Compile Include="Assets\Scripts\GamePlay\Game.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Assets\Scripts\Trap\FlimsyBox.cs" />
     <Compile Include="Assets\Scripts\Trap\Laser.cs" />
     <Compile Include="Assets\Scripts\Trap\Spikes.cs" />
+    <Compile Include="Assets\Scripts\UI\Editor.cs" />
     <Compile Include="Assets\Scripts\UI\Keys.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Score.cs" />
@@ -84,7 +87,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\Map_Asset\About these PBR files.txt" />
+    <None Include="Assets\Resources\Map_Asset\About these PBR files.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />

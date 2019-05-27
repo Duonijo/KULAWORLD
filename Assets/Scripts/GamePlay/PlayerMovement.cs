@@ -125,47 +125,33 @@ namespace GamePlay
                 yield return new WaitForSeconds(0.001f);
             }
 
+            
             yield return new WaitForSeconds(0.05f);
             IsMoving = false;
         }
 
         private IEnumerator MoveToObstacle(Axis axisGame)
         {
-            if (!playerLife.Death) //Move to a wall
+            for (float f = 0; f <= 1f; f += 0.1f)
             {
-                for (float f = 0; f <= 1f; f += 0.1f)
-                {
-                    transform.position += transform.forward * 0.05f;
-                    yield return new WaitForSeconds(0.001f);
-                }
-    
-                for (float f = 0; f < 18; f += 1f)
-                {
-                    RotateOnHimself(Vector3.right, -5);
-                    yield return new WaitForSeconds(0.001f);
-                }
-    
-                for (float f = 0; f <= 1f; f += 0.1f)
-                {
-                    transform.position += transform.forward * 0.05f;
-                    yield return new WaitForSeconds(0.001f);
-                }
-    
-                yield return new WaitForSeconds(0.1f);
-                IsMoving = false;
+                transform.position += transform.forward * 0.05f;
+                yield return new WaitForSeconds(0.001f);
             }
-            else // Move to a trap
+
+            for (float f = 0; f < 18; f += 1f)
             {
-                for (float f = 0; f <= 1f; f += 0.1f)
-                {
-                    transform.position += transform.forward * 0.05f;
-                    yield return new WaitForSeconds(0.001f);
-                }
-                Respawn();
-                playerLife.Death = false;
-                yield return new WaitForSeconds(0.1f);
-                IsMoving = false;
+                RotateOnHimself(Vector3.right, -5);
+                yield return new WaitForSeconds(0.001f);
             }
+
+            for (float f = 0; f <= 1f; f += 0.1f)
+            {
+                transform.position += transform.forward * 0.05f;
+                yield return new WaitForSeconds(0.001f);
+            }
+
+            yield return new WaitForSeconds(0.1f);
+            IsMoving = false;
             
         }
 
@@ -274,12 +260,6 @@ namespace GamePlay
             var x = transform.eulerAngles;
             return x;
         }
-
-        public void Respawn()
-        {
-            var transform1 = _startingBox.transform;
-            transform.position = transform1.position + transform1.up*1.5f;
-            transform.rotation = new Quaternion(0f,0f,0f,0f);
-        }
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI
@@ -22,10 +23,24 @@ namespace UI
         public void Start()
         {
             Timer = GameObject.Find("Canvas").GetComponent<Timer>();
-            playerCamera = GameObject.Find("Sphere/MainCamera").GetComponent<Camera>();
-            resumeCamera = GameObject.Find("ResumeCamera").GetComponent<Camera>();
-            resumeCamera.enabled = false;
-            playerCamera.enabled = true;
+            try
+            {
+                playerCamera = GameObject.FindGameObjectWithTag("Camera").GetComponent<Camera>();
+                resumeCamera = GameObject.FindGameObjectWithTag("SecondCamera").GetComponent<Camera>();
+                resumeCamera.enabled = false;
+                playerCamera.enabled = true;
+            }
+            catch (Exception e)
+            {
+                print("No camera");
+            }
+           
+            if (SceneManager.GetActiveScene().buildIndex == 0)
+            {
+                print("build 0");
+                PlayerPrefs.DeleteAll();
+            }
+            else print("Build failed");
         }
 
         void Update()
@@ -34,6 +49,8 @@ namespace UI
             {
                 Timer.stateTimer = !Timer.stateTimer;
                 BreakTime();
+               
+
             }
         }
 
@@ -47,16 +64,20 @@ namespace UI
         
             var activeIt = !optionMenu.activeSelf;
             optionMenu.SetActive(activeIt);
-            playerCamera.enabled = false;
-            resumeCamera.enabled = true;
-
-
-
+            playerCamera.enabled = !playerCamera.enabled;
+            resumeCamera.enabled = !resumeCamera.enabled;
+            
         }
         public void QuitGame()
         {
             Application.Quit();
             print("QUIT");
+        }
+
+        public void LaunchEditor()
+        {
+            SceneManager.LoadScene("Editor", LoadSceneMode.Single);
+
         }
     }
 }
