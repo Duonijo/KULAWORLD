@@ -47,7 +47,8 @@ namespace GamePlay
             _rb.useGravity = false;
             _startingBox = GameObject.Find("Start").GetComponent<StartingBox>();
             //#BUG00
-            print("sphere depart : " + transform.position);       
+            print("sphere depart : " + transform.position);
+            
         }
 
         // Update is called once per frame
@@ -55,15 +56,10 @@ namespace GamePlay
         {
             //_isEmpty = CheckNextMove();
             if (_onGround) _rb.useGravity = false;
-            if (Input.GetButtonDown("Jump"))
+            if (canMove)
             {
-                _rb.useGravity = true;
-                JumpMove(axisGame);
-            }
-
-            if(canMove){
-                if ((Input.GetKey("z") | Input.GetKey("w")) && !IsMoving && !IsRotating){
-
+                if ((Input.GetKey("z") | Input.GetKey("w")) && !IsMoving && !IsRotating)
+                {
                     IsMoving = true;
                     _isEmpty = CheckNextMove();
                     print("is Empty : " + _isEmpty);
@@ -85,8 +81,13 @@ namespace GamePlay
                     {
                         StartCoroutine(MoveTo());
                         print("case suivante : " + transform.position);
-
                     }
+                }
+
+                if (Input.GetButtonDown("Jump"))
+                {
+                    _rb.useGravity = true;
+                    JumpMove(axisGame);
                 }
 
                 if ((Input.GetKey("q") | Input.GetKey("a")) && !IsMoving && !IsRotating)
@@ -99,8 +100,9 @@ namespace GamePlay
                     IsRotating = true;
                     StartCoroutine(RotateSphere(5, axisGame));
                 }
+            }
+            
 
-            }       
             SetGravity(axisGame);
         }
 

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5628180951026233341}
   - component: {fileID: 5628180951026529244}
-  - component: {fileID: 4397388224231801252}
   m_Layer: 0
   m_Name: Captivators
   m_TagString: Untagged
@@ -50,18 +49,7 @@ MonoBehaviour:
   endPointV: {x: 0, y: 0, z: 0}
   endPoint: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
---- !u!114 &4397388224231801252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5628180951026529245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37d4931271dc6134fbce31f5d677aed4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  editorMode: {fileID: 0}
 --- !u!1 &5628180951026529247
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,3 +160,4 @@ MonoBehaviour:
   endPointV: {x: 0, y: 0, z: 0}
   endPoint: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
+  editorMode: {fileID: 0}

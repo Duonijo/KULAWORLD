@@ -13,6 +13,7 @@ namespace Trap
 
         private bool _turn;
         public Vector3 direction;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -42,6 +43,7 @@ namespace Trap
                 endPointV = startingPointV;
                 startingPointV = tampon;
             }
+
         }
 
         private void OnTriggerEnter(Collider other)
