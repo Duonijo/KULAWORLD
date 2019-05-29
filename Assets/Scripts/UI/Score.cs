@@ -12,8 +12,6 @@ namespace UI
 		public int sharedScore;
 		void Start ()
 		{
-			
-			
 			if (GetInt("Score")!=0)
 			{
 				score.text = GetInt("Score").ToString();

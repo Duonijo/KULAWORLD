@@ -1,6 +1,10 @@
 ﻿using System;
+using GamePlay;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -9,6 +13,9 @@ namespace UI
     {
         // Use this for initialization
         public GameObject optionMenu;
+        [FormerlySerializedAs("Menu")] public GameObject menu;
+        [FormerlySerializedAs("StartMenu")] public GameObject startMenu;
+        
         private Timer _timer;
         private Camera playerCamera;
         private Camera resumeCamera;
@@ -22,6 +29,7 @@ namespace UI
 
         public void Start()
         {
+
             Timer = GameObject.Find("Canvas").GetComponent<Timer>();
             try
             {
@@ -35,14 +43,16 @@ namespace UI
                 print("No camera");
             }
            
-            if (SceneManager.GetActiveScene().buildIndex == 0)
+           /* if (SceneManager.GetActiveScene().buildIndex == 0)
             {
                 print("build 0");
                 PlayerPrefs.DeleteAll();
             }
-            else print("Build failed");
-        }
+            else print("Build failed");*/
+            startMenu.SetActive(false);
 
+        }
+        
         void Update()
         {
             if (Input.GetKeyUp(KeyCode.Escape))
@@ -56,9 +66,31 @@ namespace UI
 
         public void PlayGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            menu.SetActive(false);
+            startMenu.SetActive(true);
+            var resume = GameObject.Find("Canvas/StartMenu/Resume");
+            if (PlayerPrefs.GetInt("Level",0) == 0)
+            {
+                resume.SetActive(false);
+            }
+            else
+            {
+                resume.SetActive(true);
+            }
         }
 
+        public void newGame()
+        {
+            SceneManager.LoadScene("Level_1");
+            PlayerPrefs.DeleteKey("Level");
+            PlayerPrefs.DeleteKey("Score");
+        }
+        public void ResumeGame()
+        {
+            SceneManager.LoadScene(PlayerPrefs.GetInt("Level")+1);
+
+        }
+        
         private void BreakTime()
         {
         
@@ -70,6 +102,7 @@ namespace UI
         }
         public void QuitGame()
         {
+            PlayerPrefs.DeleteAll();
             Application.Quit();
             print("QUIT");
         }
