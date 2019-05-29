@@ -12,6 +12,8 @@ TagManager:
   - Invisible
   - Camera
   - SecondCamera
+  - Last
+  - Done
   layers:
   - Default
   - TransparentFX

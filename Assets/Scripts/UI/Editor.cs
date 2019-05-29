@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
+using CustomMap;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -70,6 +71,9 @@ namespace UI
             Instantiate(_prefab);
             var newName = button.name + "(Clone)";
             selectedObject = GameObject.Find(newName);
+            selectedObject.AddComponent<GameData>();
+            var data = selectedObject.GetComponent<GameData>();
+            data.prefName = button.name;
 
         }
         public void InstantiateButton(Button button)

@@ -66,6 +66,9 @@
     <Compile Include="Assets\Scripts\Box\EndBox.cs" />
     <Compile Include="Assets\Scripts\Box\InvisibleBox.cs" />
     <Compile Include="Assets\Scripts\Box\StartingBox.cs" />
+    <Compile Include="Assets\Scripts\CustomMap\GameData.cs" />
+    <Compile Include="Assets\Scripts\CustomMap\LoadCustom.cs" />
+    <Compile Include="Assets\Scripts\CustomMap\MenuCustom.cs" />
     <Compile Include="Assets\Scripts\GamePlay\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\GamePlay\Command.cs" />
     <Compile Include="Assets\Scripts\GamePlay\FloatingObj.cs" />
@@ -74,8 +77,11 @@
     <Compile Include="Assets\Scripts\GamePlay\Glass.cs" />
     <Compile Include="Assets\Scripts\GamePlay\Life.cs" />
     <Compile Include="Assets\Scripts\GamePlay\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\GamePlay\Save.cs" />
     <Compile Include="Assets\Scripts\Hierarchy.cs" />
     <Compile Include="Assets\Scripts\LevelEditor\CameraEditor.cs" />
+    <Compile Include="Assets\Scripts\LevelEditor\SaveCustom.cs" />
+    <Compile Include="Assets\Scripts\LevelEditor\SaveScript.cs" />
     <Compile Include="Assets\Scripts\Trap\Captivators.cs" />
     <Compile Include="Assets\Scripts\Trap\FlimsyBox.cs" />
     <Compile Include="Assets\Scripts\Trap\Laser.cs" />

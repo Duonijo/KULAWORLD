@@ -90,6 +90,12 @@ namespace UI
             SceneManager.LoadScene(PlayerPrefs.GetInt("Level")+1);
 
         }
+
+        public void LaunchCustom()
+        {
+            SceneManager.LoadScene("CustomMap");
+
+        }
         
         private void BreakTime()
         {
