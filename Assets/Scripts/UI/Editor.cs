@@ -70,7 +70,7 @@ namespace UI
             _prefab.transform.position = new Vector3(0, 0, 0);
             Instantiate(_prefab);
             var newName = button.name + "(Clone)";
-            selectedObject = GameObject.Find(newName);
+            selectedObject = Instantiate(_prefab);
             selectedObject.AddComponent<GameData>();
             var data = selectedObject.GetComponent<GameData>();
             data.prefName = button.name;
@@ -86,17 +86,13 @@ namespace UI
             newBtn.GetComponent<Button>().onClick.AddListener(() => SelectPrefab(newBtn));
             newBtn.name = button.name;
             newBtn.GetComponentInChildren<Text>().text = button.name;
-            newBtn.GetComponent<Hierarchy>().prefab = _prefab;
-            //newBtn.GetComponent<Hierarchy>().instance 
+            newBtn.GetComponent<Hierarchy>().prefab = selectedObject;
 
-            
         }
 
         public void SelectPrefab(GameObject button)
         {
-            var newName = button.GetComponent<Hierarchy>().prefab.name + "(Clone)";
-            Debug.Log("NEW NAME" + newName);
-            selectedObject = GameObject.Find(newName);
+            selectedObject = button.GetComponent<Hierarchy>().prefab;
         }
 
         public void SwapAxis(Button button)

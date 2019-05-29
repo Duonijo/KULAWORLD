@@ -28,7 +28,7 @@ namespace GamePlay
 			}
 		}
 
-		public void LevelDeath(PlayerMovement player)
+		public void LevelDeath(GameObject player)
 		{
 
 			print("LEVEL DEATH");

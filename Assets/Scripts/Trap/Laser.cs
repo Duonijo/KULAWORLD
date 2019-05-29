@@ -23,10 +23,11 @@ namespace Trap
                 if (hit.collider)
                 {
                     _lr.SetPosition(1, hit.point);
-                    var player = GameObject.Find("Sphere").GetComponent<PlayerMovement>();
+                    var player = GameObject.Find("Sphere");
+                    var life = player.GetComponent<Life>();
                    if (hit.collider.gameObject.name == "Sphere")
                    {
-                       player.playerLife.LevelDeath(player);
+                       life.LevelDeath(player);
                        print("Done");
                    }
                    //Collision with laser

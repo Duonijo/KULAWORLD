@@ -15,6 +15,7 @@ public class EndBox : Box {
     void Start () {
 		SetTag();
 		save = GetComponent<Save>();
+		score = GameObject.Find("Canvas/ScoreTxt").GetComponent<TextMeshProUGUI>();
     }
 	
 	public override void OnCollisionEnter(Collision other)
@@ -28,7 +29,7 @@ public class EndBox : Box {
 	        {
 		        save.showSaveMenu();
 	        }
-	        else save.Continue();
+	        else SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	        
         }
         else { print("Continue to play"); }
