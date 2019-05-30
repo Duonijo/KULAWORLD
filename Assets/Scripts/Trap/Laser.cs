@@ -18,14 +18,16 @@ namespace Trap
         // Update is called once per frame
         void Update () {
             _lr.SetPosition(0, transform.position);
-            if (Physics.Raycast(transform.position, transform.forward, out var hit))
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, -transform.forward, out hit))
             {
                 if (hit.collider)
                 {
                     _lr.SetPosition(1, hit.point);
+                    
                     var player = GameObject.Find("Sphere");
                     var life = player.GetComponent<Life>();
-                   if (hit.collider.gameObject.name == "Sphere")
+                    if (hit.collider.gameObject.name == "Sphere")
                    {
                        life.LevelDeath(player);
                        print("Done");
