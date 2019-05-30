@@ -118,5 +118,10 @@ namespace UI
             SceneManager.LoadScene("Editor", LoadSceneMode.Single);
 
         }
+
+        public void BackToMenu()
+        {
+            SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        }
     }
 }

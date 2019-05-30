@@ -37,9 +37,6 @@ namespace LevelEditor
                 }
                 
             }
-            
-            
-            
             var save = new SaveCustom
             {
                 SaveList = listSave

@@ -27,12 +27,9 @@ namespace Trap
                     
                     var player = GameObject.Find("Sphere");
                     var life = player.GetComponent<Life>();
-                    if (hit.collider.gameObject.name == "Sphere")
-                   {
-                       life.LevelDeath(player);
-                       print("Done");
-                   }
-                   //Collision with laser
+                    if (hit.collider.gameObject.name != "Sphere") return;
+                    life.LevelDeath(player);
+                    print("Done");
                 }
             }
             else _lr.SetPosition(1, new Vector3(0,1.5f,-5000));

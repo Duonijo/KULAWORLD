@@ -64,7 +64,7 @@ namespace UI
     public void InstantiatePrefabs(Button button)
         {
 
-            var path = "Map_Asset/PREFAB/Models/" + button.name;
+            var path = "Map_Asset/PREFAB/EditorModels/" + button.name;
             var loadPrefab = Resources.Load(path);
             _prefab = loadPrefab as GameObject;
             _prefab.transform.position = new Vector3(0, 0, 0);
