@@ -33,10 +33,12 @@ namespace Trap
                 Destroy(gameObject);
             }
         }
-        private void OnCollisionExit(Collision other) {
+
+        public override void OnCollisionExit(Collision other) {
             this.SetTag();
         }
-        private void OnCollisionEnter(Collision other)
+
+        public override void OnCollisionEnter(Collision other)
         {
             collideObject = other.gameObject;
             this.tag = "ActualBox";

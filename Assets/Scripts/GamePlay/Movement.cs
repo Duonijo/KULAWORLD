@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GamePlay
 {
@@ -10,12 +11,16 @@ namespace GamePlay
         private Vector3 _tarDir;
         private Vector3 _rollDir;
         private Vector3 _rotateDir;
+        private bool _jump;
+        private bool _gravity;
         private bool _stuck;
         private bool _empty;
         private bool _mustTurn;
+        private float _maxJump;
         private float _speed;
         private float _boost;
         private Timer _timer;
+        
 
 
         public float Boost
@@ -73,6 +78,8 @@ namespace GamePlay
             _timer = GameObject.Find("Canvas").GetComponent<Timer>();
             _move = false;
             _mustTurn = false;
+            _jump = false;
+            _gravity = false;
             _speed = 10f;
             _boost = 0f;
 
@@ -83,10 +90,7 @@ namespace GamePlay
         {
             if (_boost > 0f)
             {
-                
                 _boost -= Time.deltaTime;
-                Debug.Log("BOOST : " + _boost);
-                Debug.Log("BOOST");
             }
             else
             {
@@ -96,6 +100,7 @@ namespace GamePlay
             }
             MoveForward();
             PlayerRotation();
+            Jump();
         }
         private void InputMove()
         {
@@ -125,9 +130,17 @@ namespace GamePlay
                     _endpoint = transform.position + 0.25f*transform.forward + 0.25f*transform.up;
                     _mustTurn = true;
                 }
-
-                
             }
+
+            else if (!_move && Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.Q) &&
+                !Input.GetKey(KeyCode.D))
+            {
+                _rollDir = transform.up;
+                _endpoint = transform.position + transform.up;
+                _jump = true;
+            }
+            
+            
         }
         private void MoveForward()
         {
@@ -135,7 +148,7 @@ namespace GamePlay
 
             if (_move)
             {
-                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, 0, -_rollDir.x), Space.World);
+                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, _rollDir.y, -_rollDir.x), Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
             }
 
@@ -149,7 +162,38 @@ namespace GamePlay
             
         }
 
-        public void Turn()
+        private void Jump()
+        {
+            InputMove();
+            if (_jump)
+            {
+                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, 0, -_rollDir.x), Space.World);
+                transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
+            }
+
+            if (!_jump && _gravity)
+            {
+                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, 0, -_rollDir.x), Space.World);
+                transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
+            }
+
+            if (_endpoint.y == transform.position.y)
+            {
+                _rollDir = Vector3.zero;
+                _jump = false;
+                if (!_gravity)
+                {
+                    _gravity = true;
+                    _endpoint = transform.position - transform.up;
+                    
+
+                } else _gravity = false; _rollDir = Vector3.zero;
+
+
+                Debug.Log("Reached");
+            }
+        }
+        private void Turn()
         {            
 
             if (!_move && Input.GetKeyDown(KeyCode.D))
