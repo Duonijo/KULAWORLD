@@ -26,15 +26,7 @@ namespace UI
 			get => _stateTimer;
 			set => _stateTimer = value;
 		}
-
-		private float _resume;
-
-		public float Resume
-		{
-			get => _resume;
-			set => _resume = value;
-		}
-
+		
 		private float _speed;
 
 		public float Speed
@@ -48,7 +40,6 @@ namespace UI
 		// Use this for initialization
 		void Start ()
 		{
-			_resume = 0f;
 			_break = false;
 			playerGameObj = GameObject.Find("Sphere").GetComponent<Movement>();
 			_speed = 1f;
@@ -64,15 +55,7 @@ namespace UI
 			{
 				_stateTimer = false;
 			}
-			if (_resume>0f)
-			{
-				_resume -= Time.deltaTime;
-			}
-			else
-			{
-				if (!_break) _stateTimer = true ;
-			}
-				
+			
 			if (!NoTime() && GetTimer())
 			{
 				timerSet -= Time.deltaTime*_speed;

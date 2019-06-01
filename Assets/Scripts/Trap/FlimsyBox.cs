@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using BoxScripts;
+using UnityEngine;
 
 namespace Trap
 {
-    public class FlimsyBox : Box
+    public class FlimsyBox : BoxScript
     {
         // Start is called before the first frame update
         private bool _destroyBox;

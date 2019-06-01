@@ -1,10 +1,11 @@
 using System;
+using BoxScripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Bonus
 {
-    public class Transporters : Box
+    public class Transporters : BoxScript
     {
         [FormerlySerializedAs("isTrigger")] public bool isCollide;
         public Transporters link;
