@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class StartingBox : Box {
 
-    public PlayerMovement player;
+    public Movement player;
 	// Use this for initialization
 	void Start ()
 	{
-		player = GameObject.Find("Sphere").GetComponent<PlayerMovement>();
+		player = GameObject.Find("Sphere").GetComponent<Movement>();
 		var transform1 = transform;
 		try
 		{

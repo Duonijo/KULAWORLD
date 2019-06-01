@@ -1,4 +1,5 @@
-﻿using GamePlay;
+﻿using System;
+using GamePlay;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,27 +10,72 @@ namespace UI
 	public class Timer : MonoBehaviour
 	{
 		public TextMeshProUGUI timer;
-		public PlayerMovement playerGameObj; 
+		public Movement playerGameObj; 
 
-		public bool stateTimer; // true -> work false-> is stop
+		private bool _stateTimer; // true -> work false-> is stop
+		private bool _break;
 
+		public bool Break
+		{
+			get => _break;
+			set => _break = value;
+		}
+
+		public bool StateTimer
+		{
+			get => _stateTimer;
+			set => _stateTimer = value;
+		}
+
+		private float _resume;
+
+		public float Resume
+		{
+			get => _resume;
+			set => _resume = value;
+		}
+
+		private float _speed;
+
+		public float Speed
+		{
+			get => _speed;
+			set => _speed = value;
+		}
 
 
 		[FormerlySerializedAs("_timerSet")] public float timerSet;
 		// Use this for initialization
 		void Start ()
-		{	
+		{
+			_resume = 0f;
+			_break = false;
+			playerGameObj = GameObject.Find("Sphere").GetComponent<Movement>();
+			_speed = 1f;
 			timerSet = 60;
-			stateTimer = true;
+			_stateTimer = true;
 			timer.text = timerSet.ToString();
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
+			if (_break)
+			{
+				_stateTimer = false;
+			}
+			if (_resume>0f)
+			{
+				_resume -= Time.deltaTime;
+			}
+			else
+			{
+				if (!_break) _stateTimer = true ;
+			}
+				
 			if (!NoTime() && GetTimer())
 			{
-				timerSet -= Time.deltaTime;
+				timerSet -= Time.deltaTime*_speed;
 				var timePass = Mathf.RoundToInt(timerSet);
 				timer.text = timePass.ToString();
 			}
@@ -50,18 +96,18 @@ namespace UI
 		}
 
 		public bool GetTimer(){
-			return stateTimer;
+			return _stateTimer;
 		}
 
 		public void BreakTimer(){
-			stateTimer = false;
-			playerGameObj.canMove = false;
+			_break = true;
+			playerGameObj.PlayerMove = false;
 		
 		}
 
 		public void ResumeTimer(){
-			stateTimer = true;
-			playerGameObj.canMove = true;
+			_break = true;
+			playerGameObj.PlayerMove = true;
 		}
 	}
 }

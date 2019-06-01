@@ -5,21 +5,10 @@ using GamePlay;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
-public class Glass : FloatingObj
+public class Glass : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public override void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         print("TRIGGER GLASS");    
         var invisibleBox = GameObject.FindGameObjectsWithTag("Invisible");

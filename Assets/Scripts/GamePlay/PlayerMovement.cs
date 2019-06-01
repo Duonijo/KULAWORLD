@@ -14,19 +14,14 @@ namespace GamePlay
         }
 
         public Axis axisGame;
-
-        public CameraMovement cam;
-        public Life playerLife;
-
         private bool _isEmpty;
         private bool _isObstacle;
         private bool _onGround;
         private Rigidbody _rb;
-        private StartingBox _startingBox;
 
-        public bool IsMoving { get; set; }
-        public bool canMove; 
-        public bool IsRotating { get; set; }
+        private bool _isMoving { get; set; }
+        public bool canMove;
+        private bool _isRotating { get; set; }
 
 
         // Use this for initialization
@@ -38,17 +33,14 @@ namespace GamePlay
             _onGround = true;
             
             canMove = true;
-            IsMoving = false;
-            IsRotating = false;
+            _isMoving = false;
+            _isRotating = false;
 
 
             SetGravity(axisGame);
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
-            _startingBox = GameObject.Find("Start").GetComponent<StartingBox>();
-            //#BUG00
-            print("sphere depart : " + transform.position);
-            
+
         }
 
         // Update is called once per frame
@@ -58,29 +50,24 @@ namespace GamePlay
             if (_onGround) _rb.useGravity = false;
             if (canMove)
             {
-                if ((Input.GetKey("z") | Input.GetKey("w")) && !IsMoving && !IsRotating)
+                if ((Input.GetKey("z") | Input.GetKey("w")) && !_isMoving && !_isRotating)
                 {
-                    IsMoving = true;
+                    _isMoving = true;
                     _isEmpty = CheckNextMove();
-                    print("is Empty : " + _isEmpty);
                     if (_isObstacle)
                     {
                         StartCoroutine(MoveToObstacle(axisGame));
                         _isObstacle = false;
-                        print("case obstacle : " + transform.position);
                         axisGame = ReturnAxis(axisGame);
                     }
                     else if (_isEmpty)
                     {
                         StartCoroutine(MoveToEmpty(axisGame));
                         axisGame = ReturnAxis(axisGame);
-                        print("case empty : " + transform.position);
-                        //rb.useGravity = true;
                     }
                     else
                     {
                         StartCoroutine(MoveTo());
-                        print("case suivante : " + transform.position);
                     }
                 }
 
@@ -90,14 +77,14 @@ namespace GamePlay
                     JumpMove(axisGame);
                 }
 
-                if ((Input.GetKey("q") | Input.GetKey("a")) && !IsMoving && !IsRotating)
+                if ((Input.GetKey("q") | Input.GetKey("a")) && !_isMoving && !_isRotating)
                 {
-                    IsRotating = true;
+                    _isRotating = true;
                     StartCoroutine(RotateSphere(-5, axisGame));
                 }
-                else if (Input.GetKey("d") && !IsMoving && !IsRotating)
+                else if (Input.GetKey("d") && !_isMoving && !_isRotating)
                 {
-                    IsRotating = true;
+                    _isRotating = true;
                     StartCoroutine(RotateSphere(5, axisGame));
                 }
             }
@@ -115,7 +102,7 @@ namespace GamePlay
             }
 
             yield return new WaitForSeconds(0.05f);
-            IsRotating = false;
+            _isRotating = false;
         }
 
 
@@ -129,7 +116,7 @@ namespace GamePlay
 
             
             yield return new WaitForSeconds(0.05f);
-            IsMoving = false;
+            _isMoving = false;
         }
 
         private IEnumerator MoveToObstacle(Axis axisGame)
@@ -153,7 +140,7 @@ namespace GamePlay
             }
 
             yield return new WaitForSeconds(0.1f);
-            IsMoving = false;
+            _isMoving = false;
             
         }
 
@@ -178,7 +165,7 @@ namespace GamePlay
             }
 
             yield return new WaitForSeconds(0.05f);
-            IsMoving = false;
+            _isMoving = false;
         }
 
         private bool CheckNextMove()
@@ -204,7 +191,6 @@ namespace GamePlay
         private void OnTriggerEnter(Collider other)
         {
             var colliderTag = other.tag;
-            //print(tag);
             if ("Ground" == colliderTag) _isObstacle = true;
 
         
@@ -256,12 +242,5 @@ namespace GamePlay
 
             return axisGame;
         }
-
-        private Vector3 GetDirection()
-        {
-            var x = transform.eulerAngles;
-            return x;
-        }
-        
     }
 }

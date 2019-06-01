@@ -57,7 +57,7 @@ namespace UI
         {
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                Timer.stateTimer = !Timer.stateTimer;
+                Timer.StateTimer = !Timer.StateTimer;
                 BreakTime();
                
 

@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace GamePlay
 {
     public class CameraMovement : MonoBehaviour
     {
         public GameObject player;
-
+        private bool _isTurning;
+        
         // Use this for initialization
         private void Start()
         {
+
             TargetPlayer();
         }
 
@@ -19,5 +22,6 @@ namespace GamePlay
             var point = player.transform.position; //get target's coords
             transform.LookAt(point); //makes the camera look to it                 
         }
+
     }
 }
