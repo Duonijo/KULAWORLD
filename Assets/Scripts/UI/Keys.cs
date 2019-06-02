@@ -22,6 +22,35 @@ namespace UI
 		void Start () {
 			isTrigger = false;
 			NumberKeys++;
+			var key1 = GameObject.Find("Canvas/Panel/Key1").GetComponent<Image>() as Image;
+			var key2 = GameObject.Find("Canvas/Panel/Key2").GetComponent<Image>() as Image;
+			var key3 = GameObject.Find("Canvas/Panel/Key3").GetComponent<Image>() as Image;
+			switch (NumberKeys)
+			{
+				case 3:
+					if (name == "Key1") spriteKey = key1;
+					GameObject.Find("Canvas/Panel/Key2").SetActive(false);
+					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
+					break;
+				case 2:
+					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
+					spriteKey = name == "Key1" ? key1 : key2;
+					break;
+				case 1:
+					switch (name)
+					{
+						case "Key1":
+							spriteKey = key1;
+							break;
+						case "Key2":
+							spriteKey = key2;
+							break;
+						default:
+							spriteKey = key3;
+							break;
+					}
+					break;
+			}
 		}
 	
 		// Update is called once per frame

@@ -16,7 +16,7 @@ namespace BoxScripts
 			score = GameObject.Find("Canvas/ScoreTxt").GetComponent<TextMeshProUGUI>();
 		}
 	
-		public override void OnCollisionEnter(Collision other)
+		public void OnTriggerEnter(Collider other1)
 		{
 			print("end box");
 			print(Keys.NumberKeys);

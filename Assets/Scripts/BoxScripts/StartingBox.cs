@@ -18,7 +18,7 @@ namespace BoxScripts
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("There is no player yet");
+				Console.WriteLine("There is no player yet : " + e);
 			}
 		}
 	

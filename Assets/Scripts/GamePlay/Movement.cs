@@ -13,6 +13,7 @@ namespace GamePlay
         private Vector3 _rotateDir;
         private bool _jump;
         private bool _gravity;
+        private bool _fly;
         private bool _stuck;
         private bool _empty;
         private bool _mustTurn;
@@ -20,6 +21,9 @@ namespace GamePlay
         private float _speed;
         private float _boost;
         private Timer _timer;
+        private bool _obsTurn;
+        private Vector3 _startJump;
+        private Vector3 _endRotate;
         
 
 
@@ -75,6 +79,8 @@ namespace GamePlay
         // Use this for initialization
         void Start()
         {
+            _obsTurn = false;
+            _fly = false;
             _timer = GameObject.Find("Canvas").GetComponent<Timer>();
             _move = false;
             _mustTurn = false;
@@ -82,6 +88,7 @@ namespace GamePlay
             _gravity = false;
             _speed = 10f;
             _boost = 0f;
+            _rollDir = new Vector3(0,0,0);
 
         }
 
@@ -98,14 +105,18 @@ namespace GamePlay
                 _timer.Speed = 1f;
                 Debug.Log("NORMAL MODE");
             }
+            Turn();
             MoveForward();
-            PlayerRotation();
+            //PlayerRotation();
+            ColObstacle();
             Jump();
+            Gravity();
+            
         }
         private void InputMove()
         {
             
-            if (!_move && Input.GetKey(KeyCode.Z) &&!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.D))
+            if (!_move && Input.GetKey(KeyCode.Z) &&!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.D) && !_obsTurn)
             {
                 if (!_empty)
                 {
@@ -115,117 +126,157 @@ namespace GamePlay
                         _rollDir = camera.transform.forward;
                         _endpoint = transform.position + transform.forward * 2;
                     }
-                    else
-                    {
-                        _move = true;
-                        _rollDir = camera.transform.forward;
-                        _endpoint = transform.position + 0.25f*transform.forward + 0.25f*transform.up;
-                        _mustTurn = true;
-                    }
                 }
-                else if(_stuck)
+                else
                 {
                     _move = true;
                     _rollDir = camera.transform.forward;
-                    _endpoint = transform.position + 0.25f*transform.forward + 0.25f*transform.up;
-                    _mustTurn = true;
+                    _endpoint = transform.position + transform.forward;
                 }
             }
 
             else if (!_move && Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.Q) &&
-                !Input.GetKey(KeyCode.D))
+                !Input.GetKey(KeyCode.D) && !_fly)
             {
+                _fly = true;
                 _rollDir = transform.up;
-                _endpoint = transform.position + transform.up;
+                _startJump = transform.position;
+                _endpoint = transform.position + transform.up*2;
                 _jump = true;
             }
-            
+
             
         }
         private void MoveForward()
         {
             InputMove();
-
             if (_move)
             {
-                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, _rollDir.y, -_rollDir.x), Space.World);
+                ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
             }
 
-            if (_endpoint.x == transform.position.x && _endpoint.z == transform.position.z)
+            if (_obsTurn)
+            {
+                //_rotateDir -= Vector3.right*90f;
+                transform.Rotate(-Vector3.right*90f);
+                _obsTurn = false;
+                _endpoint = transform.position + transform.forward * 0.50f;
+                _move = true;
+            }
+
+            if (_empty && !_obsTurn)
+            {
+                transform.Rotate(Vector3.right*90f);
+                _endpoint = transform.position + transform.forward * 0.50f;
+                _move = true;
+            }
+            else if (_endpoint == transform.position)
             {
                 _move = false;
-                _mustTurn = false;
                 _rollDir = Vector3.zero;
                 Debug.Log("Reached");
             }
             
         }
 
+        private void ColObstacle()
+        { 
+            RaycastHit hit;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.yellow);
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 0.5f))
+            {
+                //_move = false;
+                //_stuck = true;
+                //_endpoint = transform.position + transform.up * 0.50f;*
+                _move = false;
+                _obsTurn = true;
+                Debug.Log("Did Hit");
+            }
+        }
+
+        private void MoveToEmpty()
+        {
+            
+        }
+        private void Gravity()
+        {
+            if (_gravity)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
+                if (transform.position == _startJump)
+                {
+                    _gravity = false;
+                    _fly = false;
+                    _rollDir = Vector3.zero;
+                    Debug.Log("Reached");
+                }
+            }
+            
+           
+        }
+
         private void Jump()
         {
             InputMove();
-            if (_jump)
+            if (_jump && !_gravity)
             {
-                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, 0, -_rollDir.x), Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-            }
-
-            if (!_jump && _gravity)
-            {
-                ballMesh.transform.Rotate(300 * Time.deltaTime * new Vector3(_rollDir.z, 0, -_rollDir.x), Space.World);
-                transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-            }
-
-            if (_endpoint.y == transform.position.y)
-            {
-                _rollDir = Vector3.zero;
-                _jump = false;
-                if (!_gravity)
+                if (_endpoint.y == transform.position.y)
                 {
-                    _gravity = true;
-                    _endpoint = transform.position - transform.up;
-                    
+                    _rollDir = Vector3.zero;
+                    _jump = false;
+                    if (!_gravity)
+                    {
+                        _gravity = true;
+                        _endpoint = transform.position - transform.up * 2;
 
-                } else _gravity = false; _rollDir = Vector3.zero;
-
-
-                Debug.Log("Reached");
+                    }
+                    Debug.Log("Reached");
+                }
             }
+            
+            
         }
-        private void Turn()
-        {            
+        private float Turn()
+        {
 
+            var angle = 0;
             if (!_move && Input.GetKeyDown(KeyCode.D))
             {
                 // turn left
 
-                _rotateDir += Vector3.up*90f;
+                angle = 5;
+                transform.Rotate(Vector3.up*90f);
+                _mustTurn = true;
+                _rollDir = Vector3.up*90f;
+
             }
             else if (!_move && Input.GetKeyDown(KeyCode.Q))
             {
-                _rotateDir -= Vector3.up*90f;
+                angle = -5;
+                _rollDir -= Vector3.up*90f;
+                transform.Rotate(-Vector3.up*90f);
+                _mustTurn = true;
+
+
 
 
             }
             
             if (!_move && Input.GetKeyDown(KeyCode.F))
             {
-                _rotateDir -= Vector3.right*90f;
+                _rotateDir -= Vector3.right*45;
 
             }
-            
+
+            return angle;
+
         }
 
-        private void PlayerRotation()
+        private void PlayerRotation(float angle)
         {
-            Turn();
-            var rotation = transform.rotation;
-            Quaternion tarRot = rotation;
-            tarRot.eulerAngles = _rotateDir;
-            rotation = Quaternion.Lerp(rotation, tarRot, 0.25f);
-            transform.rotation = rotation;
-
 
         }
     }
