@@ -21,7 +21,7 @@ namespace GamePlay
 
         public IEnumerator RotateKey()
         {
-            transform.Rotate(Vector3.up);
+            transform.Rotate(transform.up);
             yield return new WaitForSeconds(0.001f);
         }
 
