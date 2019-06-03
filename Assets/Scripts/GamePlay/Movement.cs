@@ -11,10 +11,9 @@ namespace GamePlay
     {
         private bool _checkCol;
         private bool _move;
-        private Vector3 _tarDir;
-        private Vector3 _rollDir;
-        private Vector3 _rotateDir;
+        
         private bool _jump;
+        private bool _forwardJump;
         private bool _gravity;
         private bool _fly;
         private bool _stuck;
@@ -26,15 +25,16 @@ namespace GamePlay
         private Timer _timer;
         private bool _obsTurn;
         private Vector3 _startJump;
+        private bool _complexJump;
         private Vector3 _endRotate;
         private bool _rotating;
         private Quaternion _curEuler;
-        private bool mustTurn;
-
+        private bool _mustTurn;
+        private Vector3 _tarDir;
+        private Vector3 _rotateDir;
         private GameObject _left;
         private GameObject _right;
         private GameObject _face;
-        private Quaternion _targetRotation;
         
         
         public float Boost
@@ -55,13 +55,12 @@ namespace GamePlay
         private Vector3 _endpoint;
         public Transform ballMesh;
 
-        public new Camera camera;
       
         // Use this for initialization
         void Start()
         {
-            mustTurn = false;
-            _targetRotation = transform.rotation;
+            _forwardJump = false;
+            _mustTurn = false;
             _rotating = false;
             _checkCol = true;
             _goEmpty = false;
@@ -73,12 +72,10 @@ namespace GamePlay
             _gravity = false;
             _speed = 7f;
             _boost = 0f;
-            _rollDir = new Vector3(0,0,0);
 
             _left = GameObject.Find("Sphere/Triggers/Left");
             _right = GameObject.Find("Sphere/Triggers/Right");
             _face = GameObject.Find("Sphere/Triggers/Face");
-            
         }
 
         // Update is called once per frame
@@ -94,18 +91,35 @@ namespace GamePlay
                 _timer.Speed = 1f;
                 Debug.Log("NORMAL MODE");
             }
-            if (!mustTurn && !_move && Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) &&!_mustTurn && !_move )
             {
-                mustTurn = true;
-                StartCoroutine(RotateUp(Vector3.up, 90f, 0.1f));
+                _mustTurn = true;
+                StartCoroutine(RotateUp(Vector3.up, 90f, 0.2f));
                 
             }
             
-            if (!mustTurn && !_move && Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q) &&!_mustTurn && !_move)
             {
-                mustTurn = true;
-                StartCoroutine(RotateUp(Vector3.up, -90f, 0.1f));
+                _mustTurn = true;
+                StartCoroutine(RotateUp(Vector3.up, -90f, 0.2f));
                 
+            }
+
+            if (!_gravity && !Input.GetKey(KeyCode.Z) && Input.GetKey(KeyCode.Space) && !_jump && !_move)
+            {
+                _jump = true;
+                _move = false;
+                _startJump = transform.position;
+                _endpoint = transform.position + transform.up*1.5f;
+            }
+            
+            if (!_gravity && Input.GetKey(KeyCode.Z) && Input.GetKey(KeyCode.Space) && !_jump && !_move)
+            {
+                _jump = true;
+                _forwardJump = true;
+                _move = false;
+                _startJump = transform.position;
+                _endpoint = transform.position + transform.forward * 2 + transform.up*1.5f;
             }
 
 
@@ -118,26 +132,16 @@ namespace GamePlay
         private void InputMove()
         {
             
-            if (!mustTurn && !_jump && !_move && Input.GetKey(KeyCode.Z) &&!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.D) && !_obsTurn)
+            if (!_mustTurn && !_gravity && !_jump && !_move && Input.GetKey(KeyCode.Z) &&!Input.GetKey(KeyCode.Q) && !Input.GetKey(KeyCode.D) && !_obsTurn)
             {
                 if (_face.GetComponent<SideCollision>().Collision || (!_face.GetComponent<SideCollision>().Collision && !_left.GetComponent<SideCollision>().Collision && !_right.GetComponent<SideCollision>().Collision))
                 {
                     _move = true;
-                    _rollDir = camera.transform.forward;
                     _endpoint = transform.position + transform.forward * 2;
                 }
 
             }
-
-            else if (!mustTurn && !_move && Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.Z) && !Input.GetKey(KeyCode.Q) &&
-                !Input.GetKey(KeyCode.D) && !_fly)
-            {
-                _fly = true;
-                _rollDir = transform.up;
-                _startJump = transform.position;
-                _endpoint = transform.position + transform.up*2;
-                _jump = true;
-            }
+            
         }
         private void MoveForward()
         {
@@ -147,7 +151,6 @@ namespace GamePlay
                 ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
             }
-            
             if (_obsTurn)
             {
                 //_rotateDir -= Vector3.right*90f;
@@ -156,7 +159,6 @@ namespace GamePlay
                 _endpoint = transform.position + transform.forward * 0.50f;
                 _move = true;
             }
-
             if (_goEmpty)
             {
                 transform.Rotate(Vector3.right*90f);
@@ -168,7 +170,6 @@ namespace GamePlay
             if (_endpoint == transform.position)
             {
                 _move = false;
-                _rollDir = Vector3.zero;
                 _checkCol = true;
             }
         }
@@ -177,7 +178,6 @@ namespace GamePlay
             RaycastHit hit;
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.yellow);
             Debug.DrawRay(transform.position - 0.5f*transform.forward, transform.TransformDirection(Vector3.down), Color.blue);
-            // Does the ray intersect any objects excluding the player layer
             if (_checkCol)
             {
                 if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 0.5f))
@@ -189,7 +189,6 @@ namespace GamePlay
                         Debug.Log("Did Hit");
                     }
                 }
-
                 if (!Physics.Raycast(transform.position - 0.5f * transform.forward,
                         transform.TransformDirection(Vector3.down), out hit, 1f) && !(_jump || _gravity))
                 {
@@ -203,56 +202,39 @@ namespace GamePlay
         {
             if (_gravity)
             {
+                ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-                if (transform.position == _startJump)
+                if (transform.position == _endpoint)
                 {
-                    _gravity = false;
-                    _fly = false;
-                    _rollDir = Vector3.zero;
-                    Debug.Log("Reached");
+                    _endpoint = transform.position - transform.up * 2;
+                    _forwardJump = false;
                 }
             }
+
+            
+            
         }
         private void Jump()
         {
-            InputMove();
-            if (_jump && !_gravity)
+            if (_jump)
             {
+                ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-                if (_endpoint.y == transform.position.y)
+                if (transform.position == _endpoint)
                 {
-                    _rollDir = Vector3.zero;
                     _jump = false;
-                    if (!_gravity)
+                    _gravity = true;
+                    if (_forwardJump)
                     {
-                        _gravity = true;
-                        _endpoint = transform.position - transform.up * 2;
-
+                        _endpoint = transform.position + transform.forward * 2 - transform.up*1.5f;
                     }
-                    Debug.Log("Reached");
                 }
             }
         }
-        private float Turn()
+
+        private void OnCollisionEnter(Collision other)
         {
-
-            var angle = 0;
-            if (!_move && Input.GetKeyDown(KeyCode.D))
-            {
-                angle = 5;
-                transform.Rotate(Vector3.up*90f);
-                _rollDir = Vector3.up*90f;
-
-            }
-            else if (!_move && Input.GetKeyDown(KeyCode.Q))
-            {
-                angle = -5;
-                _rollDir -= Vector3.up*90f;
-                transform.Rotate(-Vector3.up*90f);
-                
-            }
-            return angle;
-
+            _gravity = false;
         }
 
         IEnumerator RotateUp(Vector3 axis, float angle, float duration)
@@ -262,7 +244,7 @@ namespace GamePlay
             
             end *= Quaternion.Euler(axis*angle);
             float elapsedTime = 0.0f;
-            while (elapsedTime < duration && mustTurn)
+            while (elapsedTime < duration && _mustTurn)
             {
                 transform.rotation = Quaternion.Slerp(start, end, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
@@ -270,7 +252,7 @@ namespace GamePlay
             }
 
             transform.rotation = end;
-            mustTurn = false;
+            _mustTurn = false;
         }
     }
 }

@@ -28,15 +28,6 @@ namespace UI
 			switch (NumberKeys)
 			{
 				case 3:
-					if (name == "Key1") spriteKey = key1;
-					GameObject.Find("Canvas/Panel/Key2").SetActive(false);
-					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
-					break;
-				case 2:
-					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
-					spriteKey = name == "Key1" ? key1 : key2;
-					break;
-				case 1:
 					switch (name)
 					{
 						case "Key1":
@@ -50,6 +41,17 @@ namespace UI
 							break;
 					}
 					break;
+				case 2:
+					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
+					key3.enabled = false;
+					spriteKey = name == "Key1" ? key1 : key2;
+					break;
+				case 1:
+					if (name == "Key1") spriteKey = key1;
+					GameObject.Find("Canvas/Panel/Key2").SetActive(false);
+					GameObject.Find("Canvas/Panel/Key3").SetActive(false);
+					break;
+					
 			}
 		}
 	
