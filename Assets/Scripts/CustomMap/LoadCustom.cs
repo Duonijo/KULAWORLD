@@ -1,15 +1,22 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Bonus;
+using BoxScripts;
+using GamePlay;
 using LevelEditor;
+using Trap;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CustomMap
 {
     public class LoadCustom : MonoBehaviour
     {
+        private GameObject _map;
         // Start is called before the first frame update
         public void Start()
         {
+            _map = GameObject.Find("Map");
             var path = Application.persistentDataPath + "/game1.save";
             LoadData(path);
         }
@@ -32,8 +39,13 @@ namespace CustomMap
                     var newName = pref.Item1 + "(Clone)";
                     var selectedObject = GameObject.Find(newName);
                     selectedObject.AddComponent<GameData>();
-                    var data = selectedObject.GetComponent<GameData>();
-                    data.prefName = pref.Item1;
+                    selectedObject.name = pref.Item1;
+                    if (selectedObject.GetComponent<BoxScript>() != null || selectedObject.GetComponent<StartingBox>() != null || selectedObject.GetComponent<EndBox>() != 
+                        null || selectedObject.GetComponent<FlimsyBox>() != null || selectedObject.GetComponent<IceBox>() != null || selectedObject.GetComponent<InvisibleBox>() != null
+                        || selectedObject.GetComponent<Transporters>() != null)
+                    {
+                        selectedObject.transform.SetParent(_map.transform);
+                    }
                 }
             }
         }

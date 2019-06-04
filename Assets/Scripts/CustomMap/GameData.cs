@@ -1,4 +1,6 @@
 ﻿using System;
+using Bonus;
+using TreeEditor;
 using UnityEngine;
 
 namespace CustomMap
@@ -14,6 +16,11 @@ namespace CustomMap
         public float posY;
         [SerializeField]
         public float posZ;
+        [SerializeField]
+        public string tpLink;
+        [SerializeField]
+        public string link;
+
         
     }
     

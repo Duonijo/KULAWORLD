@@ -17,6 +17,7 @@ namespace GamePlay
 		// Use this for initialization
 		public void Start ()
 		{
+			Debug.Log("Fruit : " + PlayerPrefs.GetInt("Fruits"));
 			if(PlayerPrefs.GetInt("Fruits",0) == 5)
 			{
 				PlayerPrefs.SetInt("Fruits",0);

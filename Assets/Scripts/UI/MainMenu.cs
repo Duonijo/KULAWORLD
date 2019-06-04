@@ -49,11 +49,7 @@ namespace UI
                 PlayerPrefs.DeleteAll();
             }
             else print("Build failed");*/
-           if (startMenu != null)
-           {
-               startMenu.SetActive(false);
-
-           }
+            startMenu.SetActive(false);
 
         }
         
