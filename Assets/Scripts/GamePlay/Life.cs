@@ -39,7 +39,8 @@ namespace GamePlay
 				_score.score.text = (_score.sharedScore-1000).ToString();
 				_score.sharedScore = int.Parse(_score.score.text);
 				PlayerPrefs.SetInt("Score", _score.sharedScore);
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+				Scene scene = SceneManager.GetActiveScene();
+				SceneManager.LoadScene(scene.name);
 
 			}
 			else

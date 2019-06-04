@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!136 &5095167742666613439
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961871192084274527}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 81.44171
+  m_Height: 392.99835
+  m_Direction: 1
+  m_Center: {x: 0, y: 456.65213, z: 0}
+--- !u!114 &6947500796587367356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961871192084274527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 812b621e40c15b14ca946a48f09a445c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &4877450414502633931
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -927199367670048503, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_Name
+      value: BluePills
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.4944
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1551
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.507
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0015235761
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0013085101
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: -0.0017891297
+      objectReference: {fileID: 0}
+    - target: {fileID: -2416733968201007103, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 982cb0e79d309d744885bbcaac632500, type: 2}
+    - target: {fileID: 2534866581884222612, guid: ed28ab0c00aa10b40b1133cd248b5597,
+        type: 3}
+      propertyPath: m_Name
+      value: BluePills
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed28ab0c00aa10b40b1133cd248b5597, type: 3}
+--- !u!1 &6961871192084274527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2534866581884222612, guid: ed28ab0c00aa10b40b1133cd248b5597,
+    type: 3}
+  m_PrefabInstance: {fileID: 4877450414502633931}
+  m_PrefabAsset: {fileID: 0}

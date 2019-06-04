@@ -24,7 +24,6 @@ namespace GamePlay
         private float _boost;
         private Timer _timer;
         private bool _obsTurn;
-        private Vector3 _startJump;
         private bool _complexJump;
         private Vector3 _endRotate;
         private bool _rotating;
@@ -91,6 +90,19 @@ namespace GamePlay
                 _timer.Speed = 1f;
                 Debug.Log("NORMAL MODE");
             }
+            
+            if (_obsTurn)
+            {
+                StartCoroutine(RotateUp(Vector3.right, -90, 0.2f));
+                
+            }
+            if (_goEmpty)
+            {
+                _rotating = true;
+                StartCoroutine(RotateUp(Vector3.right, 90, 0.2f));
+                
+            }
+            
             if (Input.GetKey(KeyCode.D) &&!_mustTurn && !_move )
             {
                 _mustTurn = true;
@@ -109,7 +121,6 @@ namespace GamePlay
             {
                 _jump = true;
                 _move = false;
-                _startJump = transform.position;
                 _endpoint = transform.position + transform.up*1.5f;
             }
             
@@ -118,10 +129,10 @@ namespace GamePlay
                 _jump = true;
                 _forwardJump = true;
                 _move = false;
-                _startJump = transform.position;
                 _endpoint = transform.position + transform.forward * 2 + transform.up*1.5f;
             }
 
+            
 
             MoveForward();
             ColObstacle();
@@ -150,28 +161,13 @@ namespace GamePlay
             {
                 ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
+                if (_endpoint == transform.position)
+                {
+                    _move = false;
+                    _checkCol = true;
+                }
             }
-            if (_obsTurn)
-            {
-                //_rotateDir -= Vector3.right*90f;
-                transform.Rotate(-Vector3.right*90f);
-                _obsTurn = false;
-                _endpoint = transform.position + transform.forward * 0.50f;
-                _move = true;
-            }
-            if (_goEmpty)
-            {
-                transform.Rotate(Vector3.right*90f);
-                _goEmpty = false;
-                _endpoint = transform.position + transform.forward*1.5f;
-                _move = true;
-            }
-
-            if (_endpoint == transform.position)
-            {
-                _move = false;
-                _checkCol = true;
-            }
+            
         }
         private void ColObstacle()
         { 
@@ -186,6 +182,7 @@ namespace GamePlay
                     {
                         _move = false;
                         _obsTurn = true;
+                        _mustTurn = true;
                         Debug.Log("Did Hit");
                     }
                 }
@@ -195,6 +192,7 @@ namespace GamePlay
                     _move = false;
                     _goEmpty = true;
                     _checkCol = false;
+                    _mustTurn = true;
                 }
             }
         }
@@ -239,6 +237,7 @@ namespace GamePlay
 
         IEnumerator RotateUp(Vector3 axis, float angle, float duration)
         {
+            _move = false;
             Quaternion start = transform.rotation;
             Quaternion end = transform.rotation;
             
@@ -253,6 +252,19 @@ namespace GamePlay
 
             transform.rotation = end;
             _mustTurn = false;
+            if (_goEmpty)
+            {
+                _goEmpty = false;
+                _endpoint = transform.position + transform.forward*1.5f;
+                _move = true;
+            }
+
+            if (_obsTurn)
+            {
+                _obsTurn = false;
+                _endpoint = transform.position + transform.forward * 0.50f;
+                _move = true;
+            }
         }
     }
 }

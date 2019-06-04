@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using UI;
+﻿using UI;
 using UnityEngine;
 
-public class Hourglass : MonoBehaviour
+namespace Bonus
 {
-    // Start is called before the first frame update
-    private void OnCollisionEnter(Collision other)
+    public class Hourglass : MonoBehaviour
     {
- 
-        Timer timer = GameObject.Find("Canvas").GetComponent<Timer>();
-        var atmTimer = 60 - int.Parse(timer.timer.text);
-        print(atmTimer);
-        timer.timerSet = atmTimer;
-        timer.timer.text = atmTimer.ToString();
-        Destroy(gameObject);
+        // Start is called before the first frame update
+        public void OnTriggerEnter(Collider collision)
+        {
+            if (collision.name != "Sphere") return;
+            Timer timer = GameObject.Find("Canvas").GetComponent<Timer>();
+            var atmTimer = 60 - int.Parse(timer.timer.text);
+            timer.timerSet = atmTimer;
+            timer.timer.text = atmTimer.ToString();
+            Destroy(gameObject);
 
+        }
     }
 }

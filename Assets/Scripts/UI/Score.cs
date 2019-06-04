@@ -7,20 +7,12 @@ namespace UI
 	public class Score : MonoBehaviour {
 
 		// Use this for initialization
-		public Canvas layer;
 		public TextMeshProUGUI score;
 		public int sharedScore;
 		void Start ()
 		{
-			if (GetInt("Score")!=0)
-			{
-				score.text = GetInt("Score").ToString();
-			}
-			else
-			{
-				score.text = "0";
-				SetInt("Score", 0);
-			}
+
+			score.text = GetInt("Score",0).ToString();
 			sharedScore = int.Parse(score.text);
 			
 		}

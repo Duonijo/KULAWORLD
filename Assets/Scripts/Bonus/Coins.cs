@@ -20,9 +20,11 @@ namespace Bonus
 
         public override void OnTriggerEnter(Collider collision)
         {
+            if (collision.name != "Sphere") return;
             _score.sharedScore += 100;
             _score.score.text = _score.sharedScore.ToString();
             Destroy(gameObject);
+
         }
     }
 }

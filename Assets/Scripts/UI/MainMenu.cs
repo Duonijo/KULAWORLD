@@ -49,7 +49,11 @@ namespace UI
                 PlayerPrefs.DeleteAll();
             }
             else print("Build failed");*/
-            startMenu.SetActive(false);
+           if (startMenu != null)
+           {
+               startMenu.SetActive(false);
+
+           }
 
         }
         
@@ -82,8 +86,8 @@ namespace UI
         public void newGame()
         {
             SceneManager.LoadScene("Level_1");
-            PlayerPrefs.DeleteKey("Level");
-            PlayerPrefs.DeleteKey("Score");
+            PlayerPrefs.DeleteAll();
+
         }
         public void ResumeGame()
         {

@@ -18,6 +18,7 @@ namespace Bonus
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.name != "Sphere") return;
             if (name == "BluePills" | name == "BluePills(Clone)")
             {
                 _player.GetComponent<Movement>().Speed += 20f;
@@ -31,10 +32,8 @@ namespace Bonus
 
 
             }
-
             _player.GetComponent<Movement>().Boost = 10f;
             Destroy(gameObject);
-        
         }
     }
 }
