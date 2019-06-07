@@ -28,7 +28,7 @@ namespace BoxScripts
             }
         }
         // Update is called once per frame
-        public override void SetTag()
+        protected override void SetTag()
         {
             if (CompareTag("Ground") || CompareTag("ActualBox"))
             {

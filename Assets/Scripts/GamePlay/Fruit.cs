@@ -3,6 +3,7 @@ using System.Collections;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.UI;
 
 namespace GamePlay
 {
@@ -14,9 +15,12 @@ namespace GamePlay
 		private string _fruitName;
 
 		private string _path;
+
+		private GameObject _panelFruits;
 		// Use this for initialization
 		public void Start ()
 		{
+			_panelFruits = GameObject.Find("Canvas/Fruits");
 			Debug.Log("Fruit : " + PlayerPrefs.GetInt("Fruits"));
 			if(PlayerPrefs.GetInt("Fruits",0) == 5)
 			{
@@ -49,6 +53,10 @@ namespace GamePlay
 			if (_isCollide)
 			{
 				StartCoroutine(AddScore(2500));
+				foreach (Transform child in transform)
+				{
+					Destroy(child.gameObject);
+				}
 				Destroy(gameObject);
 				_isCollide = false;      
 			}
@@ -64,7 +72,7 @@ namespace GamePlay
 					case 1:
 						_path = "Map_Asset/PREFAB/Models/WaterMelon";
 						_fruitName = "WaterMelon";
-
+						
 						break;
 					case 2:
 						_path = "Map_Asset/PREFAB/Models/Tomato";
@@ -98,7 +106,6 @@ namespace GamePlay
 		{   
 			_isCollide = true;
 			PlayerPrefs.SetInt("Fruits",PlayerPrefs.GetInt("Fruits",0)+1);
-			
 		}
 		
 	}

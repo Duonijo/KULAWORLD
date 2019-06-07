@@ -19,7 +19,7 @@ namespace GamePlay
 
         public void SaveState()
         {
-            PlayerPrefs.SetInt("Score", _score.sharedScore);
+            PlayerPrefs.SetInt("SaveGlobalScore", _score.finalScore);
             PlayerPrefs.SetInt("Level", _level);
             Continue();
         }

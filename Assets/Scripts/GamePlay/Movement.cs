@@ -15,18 +15,17 @@ namespace GamePlay
         private bool _jump;
         private bool _forwardJump;
         private bool _gravity;
-        private bool _fly;
         private bool _stuck;
         private bool _empty;
         private bool _goEmpty;
         private float _maxJump;
         private float _speed;
         private float _boost;
+        private float _gravityTimer;
         private Timer _timer;
         private bool _obsTurn;
         private bool _complexJump;
         private Vector3 _endRotate;
-        private bool _rotating;
         private Quaternion _curEuler;
         private bool _mustTurn;
         private Vector3 _tarDir;
@@ -60,17 +59,16 @@ namespace GamePlay
         {
             _forwardJump = false;
             _mustTurn = false;
-            _rotating = false;
             _checkCol = true;
             _goEmpty = false;
             _obsTurn = false;
-            _fly = false;
             _timer = GameObject.Find("Canvas").GetComponent<Timer>();
             _move = false;
             _jump = false;
             _gravity = false;
             _speed = 7f;
             _boost = 0f;
+            _gravityTimer = 5f;
 
             _left = GameObject.Find("Sphere/Triggers/Left");
             _right = GameObject.Find("Sphere/Triggers/Right");
@@ -90,6 +88,16 @@ namespace GamePlay
                 _timer.Speed = 1f;
                 Debug.Log("NORMAL MODE");
             }
+
+            if (_gravity)
+            {
+                _gravityTimer -= Time.deltaTime;
+                if (_gravityTimer < 0)
+                {
+                    var life = gameObject.GetComponent<Life>();
+                    life.LevelDeath(gameObject);
+                }
+            }
             
             if (_obsTurn)
             {
@@ -98,7 +106,6 @@ namespace GamePlay
             }
             if (_goEmpty)
             {
-                _rotating = true;
                 StartCoroutine(RotateUp(Vector3.right, 90, 0.2f));
                 
             }
@@ -161,8 +168,7 @@ namespace GamePlay
             {
                 ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-                if (_endpoint == transform.position)
-                {
+                if (Vector3.Distance(transform.position, _endpoint) < 0.001f)                {
                     _move = false;
                     _checkCol = true;
                 }
@@ -189,10 +195,21 @@ namespace GamePlay
                 if (!Physics.Raycast(transform.position - 0.5f * transform.forward,
                         transform.TransformDirection(Vector3.down), out hit, 1f) && !(_jump || _gravity))
                 {
-                    _move = false;
-                    _goEmpty = true;
-                    _checkCol = false;
-                    _mustTurn = true;
+                    if (_move)
+                    {
+                        _move = false;
+                        _goEmpty = true;
+                        _checkCol = false;
+                        _mustTurn = true;
+                    }
+                    else
+                    {
+                        _move = false;
+                        _checkCol = false;
+                        _gravity = true;
+                        _endpoint = transform.position - transform.up * 2;
+                    }
+                    
                 }
             }
         }
@@ -202,29 +219,31 @@ namespace GamePlay
             {
                 ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-                if (transform.position == _endpoint)
+                if (Vector3.Distance(transform.position, _endpoint) < 0.001f)
                 {
+
                     _endpoint = transform.position - transform.up * 2;
                     _forwardJump = false;
+
                 }
             }
-
-            
-            
         }
+
         private void Jump()
         {
             if (_jump)
             {
                 ballMesh.transform.Rotate(300 * Time.deltaTime * transform.right, Space.World);
                 transform.position = Vector3.MoveTowards(transform.position, _endpoint, _speed * Time.deltaTime);
-                if (transform.position == _endpoint)
+                if (Vector3.Distance(transform.position, _endpoint) < 0.001f)
                 {
-                    _jump = false;
-                    _gravity = true;
-                    if (_forwardJump)
                     {
-                        _endpoint = transform.position + transform.forward * 2 - transform.up*1.5f;
+                        _jump = false;
+                        _gravity = true;
+                        if (_forwardJump)
+                        {
+                            _endpoint = transform.position + transform.forward * 2 - transform.up * 1.5f;
+                        }
                     }
                 }
             }

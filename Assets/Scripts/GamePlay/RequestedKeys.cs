@@ -60,7 +60,7 @@ namespace GamePlay
         // Update is called once per frame
         void Update()
         {
-            if (_keysFound != 0 && !_isDisplay)
+            if ((_keysFound != 0 || PlayerPrefs.GetInt("isBonus") == 1 )&& !_isDisplay)
             {
                 DisplayRequest();
             }
@@ -100,7 +100,12 @@ namespace GamePlay
                     GameObject.Find("Canvas/Panel/Key2").SetActive(false);
                     GameObject.Find("Canvas/Panel/Key3").SetActive(false);
                     break;
-					
+				case 0:
+                    Debug.Log("0 key");
+                    GameObject.Find("Canvas/Panel/Key1").SetActive(false);
+                    GameObject.Find("Canvas/Panel/Key2").SetActive(false);
+                    GameObject.Find("Canvas/Panel/Key3").SetActive(false);
+                    break;
             }
 
             _isDisplay = true;

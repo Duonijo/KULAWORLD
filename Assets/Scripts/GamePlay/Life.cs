@@ -7,27 +7,17 @@ namespace GamePlay
 	public class Life : MonoBehaviour
 	{
 
-		private Vector3 _startPosition;
 		private Score _score;
 
-		// Use this for initialization
+		private int _startFruit;
+			// Use this for initialization
 		void Start ()
 		{
-			_startPosition = transform.position;
+			_startFruit = PlayerPrefs.GetInt("Fruits");
 			_score = GameObject.Find("Canvas").GetComponent<Score>();
 
 		}
-	
-		// Update is called once per frame
-		void Update () {
-			
-			if (transform.position.y < _startPosition.z - 100)
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-				//Debug.Log("MORT");
-			}
-		}
-
+		
 		public void LevelDeath(GameObject player)
 		{
 
@@ -40,14 +30,19 @@ namespace GamePlay
 				_score.sharedScore = int.Parse(_score.score.text);
 				PlayerPrefs.SetInt("Score", _score.sharedScore);
 				Scene scene = SceneManager.GetActiveScene();
+				if(_startFruit != PlayerPrefs.GetInt("Fruits")) PlayerPrefs.SetInt("Fruits", _startFruit);
 				SceneManager.LoadScene(scene.name);
 
 			}
 			else
 			{
 				print("LOSE");
+				_score.sharedScore = 0;
+				_score.score.text = _score.sharedScore.ToString();
 				PlayerPrefs.SetInt("Score", 0);
-				SceneManager.LoadScene(1);
+				PlayerPrefs.SetInt("GlobalScore",0);
+				PlayerPrefs.SetInt("Fruits", 0);
+				SceneManager.LoadScene(7);
 				//reload from 0
 			}
 		

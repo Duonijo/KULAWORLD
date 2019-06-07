@@ -1,4 +1,5 @@
-﻿using GamePlay;
+﻿using CustomMap;
+using GamePlay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,20 +7,36 @@ namespace Trap
 {
     public class Laser : MonoBehaviour
     {
-        public LineRenderer _lr;
+        private LineRenderer _lr;
 
-        public Vector3 position;
+        //public Vector3 position;
+
+        private Vector3 _direction;
+
+        public Vector3 Direction
+        {
+            get => _direction;
+            set => _direction = value;
+        }
+
         // Use this for initialization
         void Start () {
             _lr = GetComponent<LineRenderer>();
-            transform.position = position;
+            //transform.position = position;
+            var dir = gameObject.GetComponent<GameData>();
+            _direction = new Vector3(dir.endX, dir.endY, dir.endZ);
+            _lr.SetPosition(0, transform.position);
+
         }
 	
         // Update is called once per frame
         void Update () {
-            _lr.SetPosition(0, transform.position);
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.forward, out hit))
+            if (_direction == new Vector3(0, 0, 0))
+            {
+                _direction = -transform.forward;
+            }
+            if (Physics.Raycast(transform.position, _direction, out hit))
             {
                 if (hit.collider)
                 {
@@ -32,7 +49,7 @@ namespace Trap
                     print("Done");
                 }
             }
-            else _lr.SetPosition(1, new Vector3(0,1.5f,-5000));
+            else _lr.SetPosition(1, _direction);
 
         }
     }

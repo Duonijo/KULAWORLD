@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GamePlay;
+﻿using GamePlay;
 using UI;
 using UnityEngine;
 
-public class Gems : FloatingObj
+namespace Bonus
 {
-    private Score _score;
+    public class Gems : FloatingObj
+    {
+        private Score _score;
 
         void Start()
         {
@@ -20,9 +20,11 @@ public class Gems : FloatingObj
 
         public override void OnTriggerEnter(Collider collision)
         {
+            //Increase Score
             if (collision.name != "Sphere") return;
             _score.sharedScore += 500;
             _score.score.text = _score.sharedScore.ToString();
             Destroy(gameObject);
         }
+    }
 }

@@ -8,18 +8,19 @@ namespace UI
 
 		// Use this for initialization
 		public TextMeshProUGUI score;
-		public int sharedScore;
+		public TextMeshProUGUI globalScore;
+
+		public int sharedScore; //local score
+		public int finalScore; //final score
 		void Start ()
 		{
-
+			globalScore = GameObject.Find("Canvas/Score/GlobalScore").GetComponent<TextMeshProUGUI>();
+			finalScore = GetInt("SaveGlobalScore") != 0 ? GetInt("SaveGlobalScore") : GetInt("GlobalScore",0);
+			globalScore.text = finalScore.ToString();
 			score.text = GetInt("Score",0).ToString();
 			sharedScore = int.Parse(score.text);
 			
 		}
-	
-		// Update is called once per frame
-		void Update () {
-			
-		}
+		
 	}
 }

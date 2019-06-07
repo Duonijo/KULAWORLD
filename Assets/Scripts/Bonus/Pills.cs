@@ -18,21 +18,20 @@ namespace Bonus
 
         private void OnTriggerEnter(Collider other)
         {
+            //Add speed to player
             if (other.name != "Sphere") return;
             if (name == "BluePills" | name == "BluePills(Clone)")
             {
                 _player.GetComponent<Movement>().Speed += 20f;
 
             }
-            else
+            else // Slow down the player and increase timer speed for 10s
             {
                 _player.GetComponent<Movement>().Speed -= 5f;
                 _timer.Speed = 3f;
-                Debug.Log("sloooow");
-
-
+                
             }
-            _player.GetComponent<Movement>().Boost = 10f;
+            _player.GetComponent<Movement>().Boost = 10f; // Timer for bonus
             Destroy(gameObject);
         }
     }

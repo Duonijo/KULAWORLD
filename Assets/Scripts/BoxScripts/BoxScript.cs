@@ -4,31 +4,20 @@ namespace BoxScripts
 {
 	public class BoxScript : MonoBehaviour {
 
-		// Use this for initialization
-		public GameObject collideObject;
+		// Set Box as Ground Tag or Actual if there is a collion between Box and Sphere
 		void Start () {
 			SetTag();
 		}
-	
-		// Update is called once per frame
-		void Update () {
-		
-		}
-
-		public virtual void SetTag()
+		protected virtual void SetTag()
 		{
-			this.tag = "Ground";
+			tag = "Ground";
 		}
-
 		public virtual void OnCollisionExit(Collision other) {
-			this.SetTag();
+			SetTag();
 		}
 		public virtual void OnCollisionEnter(Collision other)
 		{
-			collideObject = other.gameObject;
-			this.tag = "ActualBox";
-			// print("Sphere position : " + collideObject.transform.position);
-			//throw new System.NotImplementedException();
+			tag = "ActualBox";
 		}
 	}
 }

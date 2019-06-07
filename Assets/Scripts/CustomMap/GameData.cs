@@ -1,7 +1,4 @@
-﻿using System;
-using Bonus;
-using TreeEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CustomMap
 {
@@ -17,9 +14,20 @@ namespace CustomMap
         [SerializeField]
         public float posZ;
         [SerializeField]
-        public string tpLink;
+        public float rotX;
+        [SerializeField]
+        public float rotY;
+        [SerializeField]
+        public float rotZ;
         [SerializeField]
         public string link;
+        [SerializeField]
+        public float endX;
+        [SerializeField]
+        public float endY;
+        [SerializeField]
+        public float endZ;
+
 
         
     }

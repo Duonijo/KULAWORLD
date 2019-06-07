@@ -18,12 +18,22 @@ namespace Trap
         void Start()
         {
             direction = Vector3.up * 2f;
-            var position = startingPoint.transform.position;
-            position += Vector3.up * 2f;
-            startingPointV = position;
-            endPointV = endPoint.transform.position + Vector3.up * 2f;
+            if (startingPoint)
+            {
+                startingPointV = startingPoint.transform.position + Vector3.up * 2f;
+
+            }
+            else
+            {
+                startingPointV = transform.position;
+            }
+
+            if (endPoint)
+            {
+                endPointV = endPoint.transform.position + Vector3.up * 2f;
+            }
+
             _turn = true;
-            transform.position = position ;
         } 
     
         // Update is called once per frame

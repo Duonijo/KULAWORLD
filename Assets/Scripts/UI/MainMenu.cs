@@ -15,7 +15,8 @@ namespace UI
         public GameObject optionMenu;
         [FormerlySerializedAs("Menu")] public GameObject menu;
         [FormerlySerializedAs("StartMenu")] public GameObject startMenu;
-        
+        [FormerlySerializedAs("PlayerMenu")] public GameObject playerMenu;
+
         private Timer _timer;
         private Camera playerCamera;
         private Camera resumeCamera;
@@ -49,7 +50,9 @@ namespace UI
                 PlayerPrefs.DeleteAll();
             }
             else print("Build failed");*/
+           if (startMenu == null) return;
             startMenu.SetActive(false);
+            playerMenu.SetActive(false);
 
         }
         
@@ -81,8 +84,9 @@ namespace UI
 
         public void newGame()
         {
-            SceneManager.LoadScene("Level_1");
-            PlayerPrefs.DeleteAll();
+            playerMenu.SetActive(true);
+            startMenu.SetActive(false);
+            //SceneManager.LoadScene("Level_1");
 
         }
         public void ResumeGame()

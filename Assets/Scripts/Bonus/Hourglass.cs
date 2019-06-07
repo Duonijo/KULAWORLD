@@ -5,9 +5,9 @@ namespace Bonus
 {
     public class Hourglass : MonoBehaviour
     {
-        // Start is called before the first frame update
         public void OnTriggerEnter(Collider collision)
         {
+            //Inverse Time. If time = 20 become 40.
             if (collision.name != "Sphere") return;
             Timer timer = GameObject.Find("Canvas").GetComponent<Timer>();
             var atmTimer = 60 - int.Parse(timer.timer.text);
